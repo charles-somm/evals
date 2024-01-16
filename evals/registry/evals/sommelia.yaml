@@ -1,0 +1,8 @@
+sommelia-testing:
+  id: sommelia-testing.test.v0
+  description: Testing wine recommendation evals. 
+
+sommelia-testing.test.v0:
+  class: evals.elsuite.sommelia.eval:SommeliaEval
+  args:
+    test_samples: sommelia/samples.jsonl
