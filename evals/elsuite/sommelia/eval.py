@@ -18,14 +18,13 @@ class SommeliaEval(evals.Eval):
     - Record results
     """
 
-    def __init__(self, test_samples, train_samples=[], **kwargs):
+    def __init__(self, test_samples, template_id: str, **kwargs):
         super().__init__(**kwargs)
-        self.train_samples = train_samples
         self.test_samples = test_samples
+        self.template_id = template_id
 
     def run(self, recorder):
         test_samples = evals.get_jsonl(self.test_samples)
-        print("Evaluating on", len(test_samples), "samples")
         self.eval_all_samples(recorder, test_samples)
 
         # TODO: create custom metrics
@@ -33,9 +32,8 @@ class SommeliaEval(evals.Eval):
         # return {"accuracy": 42.0}
 
     def eval_sample(self, test_sample, args):
-        print("EVALUATING SAMPLE")
         prompt = render_template(
-            template_id="testing-00",
+            template_id=self.template_id,
             winelist=test_sample["winelist_content"],
             criteria=test_sample["criteria"],
         )
