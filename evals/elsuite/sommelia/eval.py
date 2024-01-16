@@ -18,10 +18,19 @@ class SommeliaEval(evals.Eval):
     - Record results
     """
 
-    def __init__(self, test_samples, template_id: str, **kwargs):
+    def __init__(
+        self,
+        test_samples,
+        template_id: str,
+        temperature: float = 0.0,
+        output_json: bool = False,
+        **kwargs,
+    ):
         super().__init__(**kwargs)
         self.test_samples = test_samples
         self.template_id = template_id
+        self.temperature = temperature
+        self.output_json = output_json
 
     def run(self, recorder):
         test_samples = evals.get_jsonl(self.test_samples)
@@ -38,7 +47,14 @@ class SommeliaEval(evals.Eval):
             criteria=test_sample["criteria"],
         )
 
-        result = self.completion_fn(prompt=prompt)
+        completion_args = {
+            "prompt": prompt,
+            "temperature": self.temperature,
+        }
+        if self.output_json:
+            completion_args["response_format"] = {"type": "json_object"}
+
+        result = self.completion_fn(**completion_args)
         sampled = result.get_completions()[0]
 
         data = validate_recommendation(sampled, test_sample["listed_wines"])

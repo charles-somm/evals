@@ -7,6 +7,8 @@ sommelia-testing.test.v0:
   args:
     test_samples: sommelia/samples.jsonl
     template_id: testing-00
+    temperature: 0.8
+    output_json: True
 
 sommelia-testing-01:
   id: sommelia-testing.test.v1
@@ -17,3 +19,5 @@ sommelia-testing.test.v1:
   args:
     test_samples: sommelia/samples.jsonl
     template_id: testing-01
+    temperature: 0.8
+    output_json: True
