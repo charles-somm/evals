@@ -1,10 +1,10 @@
 import evals
-import evals.sommelia_metrics
+import evals.som_metrics
 
 from evals.record import record_event
 from evals.elsuite.sommelia.prompt import render_template
 from evals.elsuite.sommelia.validation import validate_recommendation
-from evals.sommelia_metrics import get_accuracy
+from evals.som_metrics import get_accuracy
 
 
 class SommeliaEval(evals.Eval):

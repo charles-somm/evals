@@ -1,5 +1,5 @@
 from evals.record import Event
-from evals.sommelia_metrics import get_accuracy
+from evals.som_metrics import get_accuracy
 
 
 def test_get_accuracy():
