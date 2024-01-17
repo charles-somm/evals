@@ -33,3 +33,15 @@ sommelia-testing.test.v2:
     template_id: testing-00
     temperature: 0.8
     output_json: True
+
+sommelia-testing-03:
+  id: sommelia-testing.test.temp-0.2
+  description: Testing wine recommendation evals.
+
+sommelia-testing.test.temp-0.2:
+  class: evals.elsuite.sommelia.eval:SommeliaEval
+  args:
+    test_samples: sommelia/samples.jsonl
+    template_id: testing-00
+    temperature: 0.2
+    output_json: True

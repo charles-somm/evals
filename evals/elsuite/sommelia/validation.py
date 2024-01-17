@@ -104,7 +104,6 @@ def validate_recommendation(sampled: str, listed_wines: list[str]):
         )
 
     return {
-        # "recommendation": recommendation,
         "is_valid": is_valid,
         "error": error,
         "are_wines_in_list": are_wines_in_list,

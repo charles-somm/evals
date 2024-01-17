@@ -59,4 +59,9 @@ class SommeliaEval(evals.Eval):
 
         data = validate_recommendation(sampled, test_sample["listed_wines"])
 
+        # Add winelist and criteria ids to the data
+        data["winelist_id"] = test_sample["winelist_id"]
+        data["criteria_id"] = test_sample["criteria_id"]
+        data["temperature"] = self.temperature
+
         record_event(type="validation", data=data)
