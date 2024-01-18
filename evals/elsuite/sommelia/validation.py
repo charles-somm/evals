@@ -12,6 +12,20 @@ class WineColor(Enum):
     WHITE = "white"
     ROSE = "rose"
 
+    @classmethod
+    def normalize(cls, color: str) -> "WineColor":
+        """Normalize a color string to match the enum values."""
+        normalized = (
+            unicodedata.normalize("NFKD", color)
+            .encode("ascii", "ignore")
+            .decode("utf-8")
+            .lower()
+        )
+        if normalized in cls.__members__:
+            return cls(normalized)
+        else:
+            raise ValueError(f"Invalid color: {color}")
+
 
 class Wine(BaseModel):
     name: str
