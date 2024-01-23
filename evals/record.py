@@ -76,7 +76,9 @@ class RecorderBase:
         self,
         run_spec: evals.base.RunSpec,
     ) -> None:
-        self._sample_id: ContextVar[Optional[int]] = ContextVar("_sample_id", default=None)
+        self._sample_id: ContextVar[Optional[int]] = ContextVar(
+            "_sample_id", default=None
+        )
         self.run_spec = run_spec
         self._events: List[Event] = []
         self._last_flush_time = time.time()
@@ -130,7 +132,9 @@ class RecorderBase:
         if sample_id is None:
             sample_id = self.current_sample_id()
         if sample_id is None:
-            raise ValueError("No sample_id set! Either pass it in or use as_default_recorder!")
+            raise ValueError(
+                "No sample_id set! Either pass it in or use as_default_recorder!"
+            )
 
         return Event(
             run_id=self.run_spec.run_id,
@@ -158,7 +162,9 @@ class RecorderBase:
         if sample_id is None:
             sample_id = self.current_sample_id()
         if sample_id is None:
-            raise ValueError("No sample_id set! Either pass it in or use as_default_recorder!")
+            raise ValueError(
+                "No sample_id set! Either pass it in or use as_default_recorder!"
+            )
 
         if self.is_paused(sample_id):
             return
@@ -184,7 +190,9 @@ class RecorderBase:
             self._flushes_started += 1
             self._flush_events_internal(events_to_write)
 
-    def record_match(self, correct: bool, *, expected=None, picked=None, sample_id=None, **extra):
+    def record_match(
+        self, correct: bool, *, expected=None, picked=None, sample_id=None, **extra
+    ):
         assert isinstance(
             correct, bool
         ), f"correct must be a bool, but was a {type(correct)}: {correct}"
@@ -215,7 +223,9 @@ class RecorderBase:
         }
         self.record_event("sampling", data, sample_id=sample_id)
 
-    def record_function_call(self, name, arguments, return_value, sample_id=None, **extra):
+    def record_function_call(
+        self, name, arguments, return_value, sample_id=None, **extra
+    ):
         data = {
             "name": name,
             "arguments": arguments,
@@ -303,7 +313,9 @@ class DummyRecorder(RecorderBase):
             accuracy_good = (
                 primary_metric == "accuracy" or primary_metric.startswith("pass@")
             ) and (data.get("correct", False) or data.get("accuracy", 0) > 0.5)
-            f1_score_good = primary_metric == "f1_score" and data.get("f1_score", 0) > 0.5
+            f1_score_good = (
+                primary_metric == "f1_score" and data.get("f1_score", 0) > 0.5
+            )
             if accuracy_good or f1_score_good:
                 msg = _green(msg)
             else:
@@ -320,7 +332,10 @@ class LocalRecorder(RecorderBase):
     """
 
     def __init__(
-        self, log_path: Optional[str], run_spec: RunSpec, hidden_data_fields: Sequence[Text] = []
+        self,
+        log_path: Optional[str],
+        run_spec: RunSpec,
+        hidden_data_fields: Sequence[Text] = [],
     ):
         """
         Initializes a LocalRecorder.
@@ -341,7 +356,11 @@ class LocalRecorder(RecorderBase):
         self.hidden_data_fields = hidden_data_fields
         if log_path is not None:
             with bf.BlobFile(log_path, "wb") as f:
-                f.write((jsondumps({"spec": dataclasses.asdict(run_spec)}) + "\n").encode("utf-8"))
+                f.write(
+                    (jsondumps({"spec": dataclasses.asdict(run_spec)}) + "\n").encode(
+                        "utf-8"
+                    )
+                )
 
     def _flush_events_internal(self, events_to_write: Sequence[Event]):
         start = time.time()
@@ -368,7 +387,8 @@ class LocalRecorder(RecorderBase):
         with bf.BlobFile(self.event_file_path, "ab") as f:
             f.write((jsondumps({"final_report": final_report}) + "\n").encode("utf-8"))
 
-        logging.info(f"Final report: {final_report}. Logged to {self.event_file_path}")
+        # logging.info(f"Final report: {final_report}. Logged to {self.event_file_path}")
+        print(f"Final report: {final_report}. Logged to {self.event_file_path}")
 
 
 class HttpRecorder(RecorderBase):
@@ -487,7 +507,11 @@ class Recorder(RecorderBase):
 
         if log_path is not None:
             with bf.BlobFile(log_path, "wb") as f:
-                f.write((jsondumps({"spec": dataclasses.asdict(run_spec)}) + "\n").encode("utf-8"))
+                f.write(
+                    (jsondumps({"spec": dataclasses.asdict(run_spec)}) + "\n").encode(
+                        "utf-8"
+                    )
+                )
 
         query = """
             INSERT ALL INTO runs (run_id, model_name, eval_name, base_eval, split, run_config, settings, created_by, created_at)
@@ -561,7 +585,9 @@ class Recorder(RecorderBase):
     def record_final_report(self, final_report: Any):
         with self._writing_lock:
             with bf.BlobFile(self.event_file_path, "ab") as f:
-                f.write((jsondumps({"final_report": final_report}) + "\n").encode("utf-8"))
+                f.write(
+                    (jsondumps({"final_report": final_report}) + "\n").encode("utf-8")
+                )
             query = """
                 UPDATE runs
                 SET final_report = PARSE_JSON(%(final_report)s)
@@ -591,7 +617,9 @@ def current_sample_id() -> str:
 
 
 def record_match(correct: bool, *, expected=None, picked=None, **extra):
-    return default_recorder().record_match(correct, expected=expected, picked=picked, **extra)
+    return default_recorder().record_match(
+        correct, expected=expected, picked=picked, **extra
+    )
 
 
 def record_embedding(prompt, embedding_type, **extra):
@@ -603,7 +631,9 @@ def record_sampling(prompt, sampled, **extra):
 
 
 def record_function_call(name, arguments, return_value, **extra):
-    return default_recorder().record_function_call(name, arguments, return_value, **extra)
+    return default_recorder().record_function_call(
+        name, arguments, return_value, **extra
+    )
 
 
 def record_cond_logp(prompt, completion, logp, **extra):

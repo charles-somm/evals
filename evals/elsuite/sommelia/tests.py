@@ -15,7 +15,7 @@ def test_valid_recommendation():
     return {
         "wines": [
             {
-                "name": "Château Grand Mouton",
+                "name": "Saint Émilion - Chateau Grand Mouton",
                 "color": "red",
                 "grapes": ["Merlot"],
                 "appellation": "Saint-Émilion",
@@ -52,7 +52,7 @@ def test_invalid_recommendation():
                 "grapes": ["Pinot Noir"],
                 "appellation": "Romanée-Conti",
                 "country": "FR",
-                "explanation": "Le Domaine de la Romanée-Conti Romanée-Conti est un vin rouge classique de Romanée-Conti. Avec son profil fruité et ses tanins souples, il s'accordera à merveille avec le caractère épicé du chili con carne. C'est un choix sûr pour ceux qui cherchent un vin de qualité à un prix raisonnable.",
+                "explanation": "",
             },
         ]
     }
@@ -129,6 +129,6 @@ def test_validate_recommendation(
     assert validate_recommendation(invalid_recommendation_json, test_listed_wines) == {
         # "recommendation": invalid_recommendation_json,
         "is_valid": False,
-        "error": "('wines', 1, 'color'): Input should be 'red', 'white' or 'rose'",
+        "error": "('wines', 1, 'explanation'): Value error, Explanation is empty.",
         "are_wines_in_list": False,
     }

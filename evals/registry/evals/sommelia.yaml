@@ -57,3 +57,27 @@ sommelia-prompt.short.v00:
     template_id: short_00
     temperature: 0.2
     output_json: True
+
+sommelia-prompt-04:
+  id: sommelia-prompt.temp8.v01
+  description: Testing wine recommendation evals.
+
+sommelia-prompt.temp8.v01:
+  class: evals.elsuite.sommelia.eval:SommeliaEval
+  args:
+    test_samples: sommelia/samples.jsonl
+    template_id: short_00
+    temperature: 0.8
+    output_json: True
+
+sommelia-prompt-05:
+  id: no_examples.temp8.v01
+  description: Almost same as short00, with no examples.
+
+no_examples.temp8.v01:
+  class: evals.elsuite.sommelia.eval:SommeliaEval
+  args:
+    test_samples: sommelia/samples.jsonl
+    template_id: no_examples00
+    temperature: 0.8
+    output_json: True

@@ -12,3 +12,4 @@ from .data import get_jsonls as get_jsonls
 from .data import get_lines as get_lines
 from .data import iter_jsonls as iter_jsonls
 from .eval import Eval as Eval
+from .record_csv import CSVRecorder as CSVRecorder

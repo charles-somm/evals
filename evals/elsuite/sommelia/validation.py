@@ -10,27 +10,27 @@ from enum import Enum
 class WineColor(Enum):
     RED = "red"
     WHITE = "white"
-    ROSE = "rose"
+    ROSE = "rosé"
 
-    @classmethod
-    def normalize(cls, color: str) -> "WineColor":
-        """Normalize a color string to match the enum values."""
-        normalized = (
-            unicodedata.normalize("NFKD", color)
-            .encode("ascii", "ignore")
-            .decode("utf-8")
-            .lower()
-        )
-        if normalized in cls.__members__:
-            return cls(normalized)
-        else:
-            raise ValueError(f"Invalid color: {color}")
+    # @classmethod
+    # def normalize(cls, color: str) -> "WineColor":
+    #     """Normalize a color string to match the enum values."""
+    #     normalized = (
+    #         unicodedata.normalize("NFKD", color)
+    #         .encode("ascii", "ignore")
+    #         .decode("utf-8")
+    #         .lower()
+    #     )
+    #     if normalized in cls.__members__:
+    #         return cls(normalized)
+    #     else:
+    #         raise ValueError(f"Invalid color: {color}")
 
 
 class Wine(BaseModel):
     name: str
     color: WineColor = Field(..., description="Color of the wine.")
-    appellation: str
+    region: str
     country: str
     grapes: list[str]
     explanation: str
@@ -48,6 +48,13 @@ class Wine(BaseModel):
             raise ValueError("Name is empty.")
         else:
             return name
+
+    # @field_validator("color", mode="before")
+    # def normalize_color(cls, color):
+    #     try:
+    #         return WineColor.normalize(color)
+    #     except ValueError:
+    #         raise ValueError(f"Invalid color: {color}")
 
 
 class Recommendation(BaseModel):
@@ -82,10 +89,8 @@ def check_wines(recommended_wines: list[str], listed_wines: list[str]):
 
     for wine in recommended_wines:
         if not any(
-            fuzz.partial_token_sort_ratio(
-                normalize_string(wine), normalize_string(listed_wine)
-            )
-            > 80
+            fuzz.partial_ratio(normalize_string(listed_wine), normalize_string(wine))
+            > 70
             for listed_wine in listed_wines
         ):
             return False
