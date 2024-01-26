@@ -37,7 +37,7 @@ def run_eval():
     registry = Registry()
     eval_spec = registry.get_eval(args.eval)
 
-    eval_registry_path = Path(__file__).parent / "evals" / "registry"
+    eval_registry_path = Path(__file__).parent.parent / "evals" / "registry"
 
     # eval  object
     eval_class = registry.get_class(eval_spec)
@@ -50,7 +50,7 @@ def run_eval():
     completion_fn_instance = registry.make_completion_fn(args.completion_fn)
     eval: Eval = eval_class(
         completion_fns=[completion_fn_instance],
-        samples_jsonl=eval_spec.args["test_samples"],
+        # test_samples=eval_spec.args["samples_jsonl"],
         eval_registry_path=eval_registry_path,
         name=eval_spec.key,
         seed=args.seed,

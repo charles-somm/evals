@@ -72,12 +72,26 @@ sommelia-prompt.temp8.v01:
 
 sommelia-prompt-05:
   id: no_examples.temp8.v01
-  description: Almost same as short00, with no examples.
+  description: Almost same as short00, with no examples
 
 no_examples.temp8.v01:
   class: evals.elsuite.sommelia.eval:SommeliaEval
   args:
-    test_samples: sommelia/samples.jsonl
+    samples_jsonl: sommelia/samples.jsonl
     template_id: no_examples00
     temperature: 0.8
     output_json: True
+
+sommelia-mg-00:
+  id: mg-test.test.v00
+  metrics: [accuracy]
+  description: Testing simple model-graded eval.
+mg-test.test.v00:
+  class: evals.elsuite.sommelia.eval:SommeliaModelGradedEval
+  args:
+    samples_jsonl: sommelia/samples.jsonl
+    eval_type: classify
+    template_id: no_examples00
+    temperature: 0.8
+    output_json: True
+    modelgraded_spec: sommelia-mg

@@ -1,0 +1,37 @@
+sommelia-mg:
+  prompt: |-
+    You are a French master sommelier and you are assessing your apprentice in a written test. 
+    In this task, the apprentice was given a wine list and a client's requirements. She was then asked to suggest the 2 wines that the client is most likely to enjoy within the wine list. It was required that the wines be presented as a json with the following format: 
+
+    [JSON SCHEMA converted to YAML for clarity]
+    ***
+    wines:
+        - name: <name of the first recommended wine as with fixed typos if necessary.>  
+          color: <color of the first recommended wine. Can only be one of: 'red', 'white', 'rosé'> 
+          grapes: [<list of the grape varieties used to make the wine. (e.g. ["Gamay", "Pinot noir",...])>]
+          region: <region where the winee is produced, (e.g "Bourgogne", 'Tuscany',...)>
+          country: <Country of origin using ISO code (e.g: FR for France)
+          explanation: < - **explanation**: Provide a concise, informative reason for selecting this wine. Discuss its profile, how it pairs with the food, and its suitability for the occasion, budget, and taste preferences. Be direct and avoid introductions.>
+        - name: <The second recommended wine, with the same fields as above.>
+          etc...
+    ***
+    [END JSON SCHEMA]
+
+    [BEGIN DATA]
+    ***
+    [Wine list]: {winelist_content}
+    [Client's criteria]: {criteria}
+    ***
+    [Submission]: {completion}
+    ***
+    [END DATA]
+    Are the recommended wines listed in the provided wine list?
+    Print only the single character "Y" or "N" (without quotes or punctuation) on its own line corresponding to the correct answer.
+
+  eval_type: classify
+  choice_scores:
+    "Y": 1.0
+    "N": 0.0
+  choice_strings: "YN"
+  input_outputs:
+    input: "completion"
