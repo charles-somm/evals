@@ -1,0 +1,5 @@
+sommelia-set:
+  evals:
+    - sommelia-mg-fromlist
+    - sommelia-mg-format
+    - sommelia-mg-explanation

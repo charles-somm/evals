@@ -95,3 +95,56 @@ mg-test.test.v00:
     temperature: 0.8
     output_json: True
     modelgraded_spec: sommelia-mg
+
+sommelia-mg-fromlist:
+  id: sommelia.mg.fromlist
+  metrics: [accuracy]
+  description: Testing simple model-graded eval.
+sommelia.mg.fromlist:
+  class: evals.elsuite.sommelia.eval:SommeliaModelGradedEval
+  args:
+    samples_jsonl: sommelia/samples.jsonl
+    eval_type: classify
+    template_id: no_examples00
+    temperature: 0.5
+    modelgraded_spec: sommelia-mg-yn
+    modelgraded_spec_args:
+      evalcriteria: |
+        Do both recommended wines refer to a specific wine that is present in the wine list?
+
+sommelia-mg-format:
+  id: sommelia.mg.format
+  metrics: [accuracy]
+  description: Testing simple model-graded eval.
+sommelia.mg.format:
+  class: evals.elsuite.sommelia.eval:SommeliaModelGradedEval
+  args:
+    samples_jsonl: sommelia/samples.jsonl
+    eval_type: classify
+    template_id: no_examples00
+    temperature: 0.5
+    modelgraded_spec: sommelia-mg-yn
+    modelgraded_spec_args:
+      evalcriteria: |
+        Is the answer in French and does it follow the required JSON schema?
+
+sommelia-noexamples-explanation:
+  id: sommelia.no_examples02.explanation
+  metrics: [accuracy]
+  description: Testing simple model-graded eval.
+sommelia.no_examples02.explanation:
+  class: evals.elsuite.sommelia.eval:SommeliaModelGradedEval
+  args:
+    samples_jsonl: sommelia/samples.jsonl
+    eval_type: cot_classify
+    template_id: no_examples02
+    temperature: 0.5
+    modelgraded_spec: sommelia-mg-score
+    modelgraded_spec_args:
+      evalcriteria: |
+        Assess the apprentice's recommendaton taking into account the following criteria:
+        - How much is the same recommendation likely to be made by a master sommelier in the same situation?
+        - How much is the client likely to enjoy the recommended wines?
+        - Is the explanation specific and informative on why the wines were chosen?
+        - Is all the provided information correct?
+        Then rate the apprentice's recommendation on a scale from 1 to 5, where 5 is the best possible score when all the evaluation criteria are met.

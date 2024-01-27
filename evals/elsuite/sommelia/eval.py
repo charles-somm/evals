@@ -237,7 +237,6 @@ class SommeliaModelGradedEval(ModelBasedClassify):
                 get_input_completion = PromptFn(
                     test_sample[k],
                     completion_fn=self.completion_fn,
-                    # allow_missing=True,
                     **self.sample_kwargs,
                 )
                 completion, _ = get_input_completion()
